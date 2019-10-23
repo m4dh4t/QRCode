@@ -1,2 +1,2 @@
-# QRCode
-QR Code entirely written in Java.
+# QR Code generator
+QR Code generator entirely written in Java.
