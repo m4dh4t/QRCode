@@ -25,9 +25,14 @@ public final class DataEncoding {
 	 *         truncated to fit the version capacity
 	 */
 	public static int[] encodeString(String input, int maxLength) {
-		// TODO Implementer
+		byte[] inputByte = input.getBytes(StandardCharsets.ISO_8859_1);
+		int[] inputInt = new int[maxLength];
 
-		return null;
+		for(int i = 0; i < inputByte.length && i < maxLength; i++){
+			inputInt[i] = inputByte[i] & 0xFF;
+		}
+
+		return inputInt;
 	}
 
 	/**

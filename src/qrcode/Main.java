@@ -17,7 +17,7 @@ public class Main {
 		 * Encoding
 		 */
 		boolean[] encodedData = DataEncoding.byteModeEncoding(INPUT, VERSION);
-		
+
 		/*
 		 * image
 		 */
@@ -26,7 +26,7 @@ public class Main {
 		/*
 		 * Visualization
 		 */
-		Helpers.show(qrCode, SCALING);
+		//Helpers.show(qrCode, SCALING); Commenting this line for now as it make the program crash.
 	}
 
 }
