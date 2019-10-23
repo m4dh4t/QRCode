@@ -25,14 +25,14 @@ public final class DataEncoding {
 	 *         truncated to fit the version capacity
 	 */
 	public static int[] encodeString(String input, int maxLength) {
-		byte[] inputBytes = input.getBytes(StandardCharsets.ISO_8859_1);
-		int[] inputInt = new int[maxLength];
+		byte[] arrayBytes = input.getBytes(StandardCharsets.ISO_8859_1);
+		int[] arrayInt = new int[maxLength];
 
-		for(int i = 0; i < inputBytes.length && i < maxLength; i++){
-			inputInt[i] = inputBytes[i] & 0xFF;
+		for(int i = 0; i < arrayBytes.length && i < maxLength; i++){
+			arrayInt[i] = arrayBytes[i] & 0xFF;
 		}
 
-		return inputInt;
+		return arrayInt;
 	}
 
 	/**
@@ -44,6 +44,9 @@ public final class DataEncoding {
 	 */
 	public static int[] addInformations(int[] inputBytes) {
 		// TODO Implementer
+
+
+
 		return null;
 	}
 
