@@ -43,11 +43,23 @@ public final class DataEncoding {
 	 * @return The input bytes with an header giving the type and size of the data
 	 */
 	public static int[] addInformations(int[] inputBytes) {
-		// TODO Implementer
+		int prefix = 0b0100;
+		int size = inputBytes.length;
+		int[] newInputBytes = new int[size+2];
 
+		for(int i = 0; i <= size+1; i++){
+			if(i == 0){
+				newInputBytes[i] = (prefix << 4) | (size >> 4);
+			} else if(i == 1){
+				newInputBytes[i] = (size&0xF) << 4 | inputBytes[0] >> 4;
+			} else if(i == (size+1)){
+				newInputBytes[i] = (inputBytes[i-2]&0xF) << 4;
+			} else {
+				newInputBytes[i] = (inputBytes[i-2]&0xF) << 4 | inputBytes[i-1] >> 4;
+			}
+		}
 
-
-		return null;
+		return newInputBytes;
 	}
 
 	/**
