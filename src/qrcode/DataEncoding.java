@@ -45,21 +45,21 @@ public final class DataEncoding {
 	public static int[] addInformations(int[] inputBytes) {
 		int prefix = 0b0100;
 		int size = inputBytes.length;
-		int[] newInputBytes = new int[size+2];
+		int[] infoInputBytes = new int[size+2];
 
 		for(int i = 0; i <= size+1; i++){
 			if(i == 0){
-				newInputBytes[i] = (prefix << 4) | (size >> 4);
+				infoInputBytes[i] = (prefix << 4) | (size >> 4);
 			} else if(i == 1){
-				newInputBytes[i] = (size&0xF) << 4 | inputBytes[0] >> 4;
+				infoInputBytes[i] = (size&0xF) << 4 | inputBytes[0] >> 4;
 			} else if(i == (size+1)){
-				newInputBytes[i] = (inputBytes[i-2]&0xF) << 4;
+				infoInputBytes[i] = (inputBytes[i-2]&0xF) << 4;
 			} else {
-				newInputBytes[i] = (inputBytes[i-2]&0xF) << 4 | inputBytes[i-1] >> 4;
+				infoInputBytes[i] = (inputBytes[i-2]&0xF) << 4 | inputBytes[i-1] >> 4;
 			}
 		}
 
-		return newInputBytes;
+		return infoInputBytes;
 	}
 
 	/**
@@ -74,8 +74,26 @@ public final class DataEncoding {
 	 *         bytes 236,17
 	 */
 	public static int[] fillSequence(int[] encodedData, int finalLength) {
-		// TODO Implementer
-		return null;
+        if(encodedData.length >= finalLength){
+            return encodedData;
+        } else {
+            int[] filledEncodedData = new int[finalLength];
+            int numbersAdded = 0;
+
+            for(int i = 0; i < finalLength; i++){
+                if(i < encodedData.length){
+                    filledEncodedData[i] = encodedData[i];
+                } else {
+                    if(numbersAdded % 2 == 0){
+                        filledEncodedData[i] = 236;
+                    } else {
+                        filledEncodedData[i] = 17;
+                    }
+                    ++numbersAdded;
+                }
+            }
+            return filledEncodedData;
+        }
 	}
 
 	/**
