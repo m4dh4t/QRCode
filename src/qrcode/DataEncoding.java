@@ -131,8 +131,18 @@ public final class DataEncoding {
 	 * @return a boolean array representing the data in binary
 	 */
 	public static boolean[] bytesToBinaryArray(int[] data) {
-		// TODO Implementer
-		return null;
+        boolean[] binaryArray = new boolean[data.length*8];
+
+        for(int i = 0; i < data.length; i++){
+            int bitsLeft = 7;
+            while(data[i] > 0){
+                binaryArray[bitsLeft + (i*8)] = (data[i] % 2 != 0);
+                data[i] /= 2;
+
+                --bitsLeft;
+            }
+        }
+		return binaryArray;
 	}
 
 }
