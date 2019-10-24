@@ -26,7 +26,7 @@ public class Main {
 		/*
 		 * Visualization
 		 */
-		//Helpers.show(qrCode, SCALING); Commenting this line for now as it make the program crash.
+		//Helpers.show(qrCode, SCALING); Commenting this line for now as it makes the program crash.
 	}
 
 }
