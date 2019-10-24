@@ -106,8 +106,20 @@ public final class DataEncoding {
 	 * @return the original data concatenated with the error correction
 	 */
 	public static int[] addErrorCorrection(int[] encodedData, int eccLength) {
-		// TODO Implementer
-		return null;
+        int[] eccEncodedData = new int[encodedData.length + eccLength];
+        int[] eccArray = ErrorCorrectionEncoding.encode(encodedData, eccLength);
+        int eccDataAdded = 0;
+
+        for(int i = 0; i < eccEncodedData.length; i++){
+            if(i < encodedData.length){
+                eccEncodedData[i] = encodedData[i];
+            } else {
+                eccEncodedData[i] = eccArray[eccDataAdded];
+                ++eccDataAdded;
+            }
+        }
+
+		return eccEncodedData;
 	}
 
 	/**
