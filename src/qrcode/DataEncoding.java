@@ -12,8 +12,16 @@ public final class DataEncoding {
 	 * @return
 	 */
 	public static boolean[] byteModeEncoding(String input, int version) {
-		// TODO Implementer
-		return null;
+        int maxInputLength = QRCodeInfos.getMaxInputLength(version);
+        int codeWordsLength = QRCodeInfos.getCodeWordsLength(version);
+        int ECCLength = QRCodeInfos.getECCLength(version);
+
+        int[] encodedString = encodeString(input, maxInputLength);
+        int[] encodedInfoData = addInformations(encodedString);
+        int[] encodedFilledData = fillSequence(encodedInfoData, codeWordsLength);
+        int[] encodedECCData = addErrorCorrection(encodedFilledData, ECCLength);
+
+        return bytesToBinaryArray(encodedECCData);
 	}
 
 	/**
@@ -45,21 +53,21 @@ public final class DataEncoding {
 	public static int[] addInformations(int[] inputBytes) {
 		int prefix = 0b0100;
 		int size = inputBytes.length;
-		int[] infoInputBytes = new int[size+2];
+		int[] infoEncodedData = new int[size+2];
 
 		for(int i = 0; i <= size+1; i++){
 			if(i == 0){
-				infoInputBytes[i] = (prefix << 4) | (size >> 4);
+				infoEncodedData[i] = (prefix << 4) | (size >> 4);
 			} else if(i == 1){
-				infoInputBytes[i] = (size&0xF) << 4 | inputBytes[0] >> 4;
+				infoEncodedData[i] = (size&0xF) << 4 | inputBytes[0] >> 4;
 			} else if(i == (size+1)){
-				infoInputBytes[i] = (inputBytes[i-2]&0xF) << 4;
+				infoEncodedData[i] = (inputBytes[i-2]&0xF) << 4;
 			} else {
-				infoInputBytes[i] = (inputBytes[i-2]&0xF) << 4 | inputBytes[i-1] >> 4;
+				infoEncodedData[i] = (inputBytes[i-2]&0xF) << 4 | inputBytes[i-1] >> 4;
 			}
 		}
 
-		return infoInputBytes;
+		return infoEncodedData;
 	}
 
 	/**
@@ -92,6 +100,7 @@ public final class DataEncoding {
                     ++numbersAdded;
                 }
             }
+
             return filledEncodedData;
         }
 	}
@@ -142,6 +151,7 @@ public final class DataEncoding {
                 --bitsLeft;
             }
         }
+
 		return binaryArray;
 	}
 
