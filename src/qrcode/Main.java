@@ -17,7 +17,7 @@ public class Main {
 		 * Encoding
 		 */
 		boolean[] encodedData = DataEncoding.byteModeEncoding(INPUT, VERSION);
-		//First commit from Eclipse
+
 		/*
 		 * image
 		 */
