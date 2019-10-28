@@ -17,16 +17,18 @@ public class Main {
 		 * Encoding
 		 */
 		boolean[] encodedData = DataEncoding.byteModeEncoding(INPUT, VERSION);
+		int [][] matrice = MatrixConstruction.constructMatrix(VERSION, MASK);
+		
 
 		/*
 		 * image
 		 */
 		int[][] qrCode = MatrixConstruction.renderQRCodeMatrix(VERSION, encodedData,MASK);
-
+		
 		/*
 		 * Visualization
 		 */
-		//Helpers.show(qrCode, SCALING); Commenting this line for now as it makes the program crash.
+		Helpers.show(qrCode, SCALING); //Commenting this line for now as it makes the program crash.
 	}
 
 }
