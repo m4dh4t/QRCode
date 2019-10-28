@@ -196,16 +196,14 @@ public class MatrixConstruction {
 		for (int i=8; i<= (matrix.length - 9); i++) {
 			if (i % 2 == 0) {
 				matrix[6][i] = B;
-			} 
-			else {
+			} else {
 				matrix[6][i] = W;
 			}
 		}
 		for (int i=8; i<= (matrix.length - 9); i++) {
 			if (i % 2 == 0) {
 					matrix[i][6] = B;
-			}
-			else {
+			} else {
 				matrix[i][6] = W;
 			}
 		}
