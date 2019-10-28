@@ -128,7 +128,7 @@ public class MatrixConstruction {
 	public static int [][] PatternPlacer(int[][] matrix, int [][] pattern, int x, int y, int a, int b) {
 		for (int i=1; i< a ; i++) {
 			for (int j=1; j< b ; j++) {
-			matrix[x+i-1][y+j-1]=pattern[i][j];
+				matrix[x+i-1][y+j-1]=pattern[i][j];
 			}
 		}
 		return matrix;
@@ -165,7 +165,7 @@ public class MatrixConstruction {
 				motif [i][j] = W;
 			}
 		}
-				motif [3][3] = B;
+		motif [3][3] = B;
 		return motif;
 	}
 
@@ -182,7 +182,7 @@ public class MatrixConstruction {
 		if (version>1) {
 			int taille = matrix.length;
 			matrix=PatternPlacer(matrix, AlignementPattern, (taille - 9),(taille - 9),6,6);
-			}
+		}
 	}
 	
 
@@ -203,11 +203,11 @@ public class MatrixConstruction {
 		}
 		for (int i=8; i<= (matrix.length - 9); i++) {
 			if (i % 2 == 0) {
-				matrix[i][6] = B;
-				} 
-				else {
-					matrix[i][6] = W;
-				}
+					matrix[i][6] = B;
+			}
+			else {
+				matrix[i][6] = W;
+			}
 		}
 	}
 
@@ -217,14 +217,15 @@ public class MatrixConstruction {
 	 * @param matrix
 	 *            the 2-dimensional array representing the QR code
 	 */
-	public static void addDarkModule(int[][] matrix) {
+	public static void addDarkModule(int[][] matrix)
+	{
 		matrix[8][matrix.length - 8] = B;
 	}
 	
 	public static int [] ConvertBooleanToBW(boolean [] tab) {
 		int [] Sequence = new int [tab.length] ;
 		for (int i=0; i<tab.length ; i++) {
-			if (tab [i] == true) {
+			if (tab[i]) {
 				Sequence [i] =B; 
 			} else {
 				Sequence [i] =W;
@@ -246,7 +247,7 @@ public class MatrixConstruction {
 		int j=7;
 		for (int i=0; i<16; i++) {
 			if (i>=0 && i<=5) {
-			matrix[i][8]=Sequence[i];
+				matrix[i][8]=Sequence[i];
 			}
 			if (i>=6 && i<=7) {
 				matrix[i+1][8]=Sequence[i];
@@ -260,12 +261,12 @@ public class MatrixConstruction {
 		int m= matrix.length - 1;
 		for (int k=0; k<16; k++) {
 			if (k>=0 && k<7) {
-			matrix[8][l-k]=Sequence[k];
+				matrix[8][l-k]=Sequence[k];
 			}
 			if (k>=7 && k<15) {
 				matrix[m-7][8]=Sequence[k];
 				m=m+1;
-				}
+			}
 		}
 	}
 		
