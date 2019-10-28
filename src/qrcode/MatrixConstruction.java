@@ -11,8 +11,7 @@ public class MatrixConstruction {
 	 * 
 	 * both needs to have their alpha component to 255
 	 */
-	// TODO add constant for White pixel
-	// TODO add constant for Black pixel
+
 	public static final int W = 0xFF_FF_FF_FF;
 	public static final int B = 0xFF_00_00_00;
 	public static final int [][] motif = ConstructionMotif();
@@ -96,12 +95,6 @@ public class MatrixConstruction {
 		return matrix;
 	}
 
-	/**
-	 * Add all finder patterns to the given matrix with a border of White modules.
-	 * 
-	 * @param matrix
-	 *            the 2D array to modify: where to add the patterns
-	 */
 	public static int [][] ConstructionMotif() {
 		int [][] motif = new int [8][8];
 		for (int i=1 ; i<=7 ; i++) {
@@ -140,8 +133,13 @@ public class MatrixConstruction {
 		}
 		return matrix;
 	}
-		
-	
+
+	/**
+	 * Add all finder patterns to the given matrix with a border of White modules.
+	 *
+	 * @param matrix
+	 *            the 2D array to modify: where to add the patterns
+	 */
 	public static void addFinderPatterns(int[][] matrix) {
 		int taille = matrix.length;
 		matrix=PatternPlacer(matrix, motif, 0,0,8,8);
@@ -154,16 +152,6 @@ public class MatrixConstruction {
 		matrix=PatternPlacer(matrix, Ligne, (taille - 8),7,9,2);
 		matrix=PatternPlacer(matrix, Ligne, 0,(taille - 8),9,2);
 	}
-
-	/**
-	 * Add the alignment pattern if needed, does nothing for version 1
-	 * 
-	 * @param matrix
-	 *            The 2D array to modify
-	 * @param version
-	 *            the version number of the QR code needs to be between 1 and 4
-	 *            included
-	 */
 		
 	public static int [][] ConstructionAlignementPattern() {
 		int [][] motif = new int [6][6];
@@ -180,7 +168,16 @@ public class MatrixConstruction {
 				motif [3][3] = B;
 		return motif;
 	}
-	
+
+	/**
+	 * Add the alignment pattern if needed, does nothing for version 1
+	 *
+	 * @param matrix
+	 *            The 2D array to modify
+	 * @param version
+	 *            the version number of the QR code needs to be between 1 and 4
+	 *            included
+	 */
 	public static void addAlignmentPatterns(int[][] matrix, int version) {
 		if (version>1) {
 			int taille = matrix.length;
@@ -223,15 +220,6 @@ public class MatrixConstruction {
 	public static void addDarkModule(int[][] matrix) {
 		matrix[8][matrix.length - 8] = B;
 	}
-
-	/**
-	 * Add the format information to the matrix
-	 * 
-	 * @param matrix
-	 *            the 2-dimensional array representing the QR code to modify
-	 * @param mask
-	 *            the mask id
-	 */	
 	
 	public static int [] ConvertBooleanToBW(boolean [] tab) {
 		int [] Sequence = new int [tab.length] ;
@@ -244,7 +232,15 @@ public class MatrixConstruction {
 		}
 		return Sequence;
 	}
-	
+
+	/**
+	 * Add the format information to the matrix
+	 *
+	 * @param matrix
+	 *            the 2-dimensional array representing the QR code to modify
+	 * @param mask
+	 *            the mask id
+	 */
 	public static void addFormatInformation(int[][] matrix, int mask) {
 		int [] Sequence = ConvertBooleanToBW(QRCodeInfos.getFormatSequence(mask));
 		int j=7;
