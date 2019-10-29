@@ -188,3 +188,4 @@ hs_err_pid*
 ## Custom file ignoring:
 .idea/*
 *.iml
+Test*.html
