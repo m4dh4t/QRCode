@@ -122,13 +122,6 @@ public class MatrixConstruction {
 		return Bande;
 	}
 
-	/**
-	 * Build the finder pattern for a given matrix
-	 *  @param matrix
-	 *
-	 * @param pattern
-	 *
-	 */
 	public static void squareConstructor(int[][] matrix, int[][] pattern, int x, int y, int a, int b) {
 		for (int i=1; i< a ; i++) {
 			for (int j=1; j< b ; j++) {
@@ -156,9 +149,7 @@ public class MatrixConstruction {
 		squareConstructor(matrix, line, 0,(size - 8),9,2);
 	}
 
-	/**
-	 * Build the alignment pattern
-	 */
+
 	public static int[][] alignmentPatternConstructor() {
 		int[][] motif = new int[6][6];
 		for (int i=1 ; i<=5 ; i++) {
@@ -192,12 +183,6 @@ public class MatrixConstruction {
 	}
 
 
-	/**
-	 * Add the timings patterns
-	 * 
-	 * @param matrix
-	 *            The 2D array to modify
-	 */
 	public static void addTimingPatterns(int[][] matrix) {
 		for (int i=8; i<= (matrix.length - 9); i++) {
 			if (i % 2 == 0) {
