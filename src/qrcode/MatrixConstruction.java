@@ -15,9 +15,9 @@ public class MatrixConstruction {
 	public static final int W = 0xFF_FF_FF_FF;
 	public static final int B = 0xFF_00_00_00;
 	public static final int [][] motif = ConstructionMotif();
-	public static final int [][] AlignementPattern = ConstructionAlignementPattern();
-	public static final int [][] Ligne = ConstructionBande(8,1);
-	public static final int [][] Colonne = ConstructionBande(1,8);
+	public static final int [][] line = ConstructionBande(8,1);
+	public static final int [][] column = ConstructionBande(1,8);
+
 	// ...  MYDEBUGCOLOR = ...;
 	// feel free to add your own colors for debugging purposes
 
@@ -33,8 +33,6 @@ public class MatrixConstruction {
 	 *            used.
 	 * @return The matrix of the QR code
 	 */
-
-	
 	public static int[][] renderQRCodeMatrix(int version, boolean[] data, int mask) {
 
 		/*
@@ -66,8 +64,8 @@ public class MatrixConstruction {
 	 *            the mask id to use to mask the data modules. Has to be between 0
 	 *            and 7 included to have a valid matrix. If the mask id is not
 	 *            valid, the modules would not be not masked later on, hence the
-	 *            QRcode would not be valid
-	 * @return the qrcode with the patterns and format information modules
+	 *            QR Code would not be valid
+	 * @return the QR Code with the patterns and format information modules
 	 *         initialized. The modules where the data should be remain empty.
 	 */
 	public static int[][] constructMatrix(int version, int mask) {
@@ -90,33 +88,32 @@ public class MatrixConstruction {
 	 * @return an empty matrix
 	 */
 	public static int[][] initializeMatrix(int version) {
-		int taille = QRCodeInfos.getMatrixSize(version);
-		int [][] matrix = new int [taille][taille];
-		return matrix;
+		int size = QRCodeInfos.getMatrixSize(version);
+		return new int[size][size];
 	}
 
-	public static int [][] ConstructionMotif() {
-		int [][] motif = new int [8][8];
+	public static int[][] ConstructionMotif() {
+		int[][] motif = new int[8][8];
 		for (int i=1 ; i<=7 ; i++) {
 			for (int j=1 ; j<=7 ; j++) {
-				motif [i][j] = B;
+				motif[i][j] = B;
 			}
 		}
 		for (int i=2 ; i<=6; i++) {
 			for (int j=2 ; j<=6; j++) {
-				motif [i][j] = W;
+				motif[i][j] = W;
 			}
 		}
 		for (int i=3 ; i<=5; i++) {
 			for (int j=3 ; j<=5; j++) {
-				motif [i][j] = B;
+				motif[i][j] = B;
 			}
 		}
 		return motif;
 	}
 	
 	public static int [][] ConstructionBande(int a, int b) {
-		int [][] Bande = new int [a+1][b+1];
+		int[][] Bande = new int [a+1][b+1];
 		for (int i=1 ; i<=a; i++) {
 			for (int j=1 ; j<=b; j++) {
 				Bande [i][j] = W;
@@ -124,14 +121,20 @@ public class MatrixConstruction {
 		}
 		return Bande;
 	}
-	
-	public static int [][] PatternPlacer(int[][] matrix, int [][] pattern, int x, int y, int a, int b) {
+
+	/**
+	 * Build the finder pattern for a given matrix
+	 *  @param matrix
+	 *
+	 * @param pattern
+	 *
+	 */
+	public static void squareConstructor(int[][] matrix, int[][] pattern, int x, int y, int a, int b) {
 		for (int i=1; i< a ; i++) {
 			for (int j=1; j< b ; j++) {
 				matrix[x+i-1][y+j-1]=pattern[i][j];
 			}
 		}
-		return matrix;
 	}
 
 	/**
@@ -141,31 +144,34 @@ public class MatrixConstruction {
 	 *            the 2D array to modify: where to add the patterns
 	 */
 	public static void addFinderPatterns(int[][] matrix) {
-		int taille = matrix.length;
-		matrix=PatternPlacer(matrix, motif, 0,0,8,8);
-		matrix=PatternPlacer(matrix, motif, 0,(taille - 7),8,8);
-		matrix=PatternPlacer(matrix, motif, (taille - 7),0,8,8);
-		matrix=PatternPlacer(matrix, Colonne, (taille - 8),0,2,9);
-		matrix=PatternPlacer(matrix, Colonne, 7,0,2,9);
-		matrix=PatternPlacer(matrix, Colonne, 7,(taille - 8),2,9);
-		matrix=PatternPlacer(matrix, Ligne, 0,7,9,2);
-		matrix=PatternPlacer(matrix, Ligne, (taille - 8),7,9,2);
-		matrix=PatternPlacer(matrix, Ligne, 0,(taille - 8),9,2);
+		int size = matrix.length;
+		squareConstructor(matrix, motif, 0, 0, 8, 8);
+		squareConstructor(matrix, motif, 0, (size - 7), 8, 8);
+		squareConstructor(matrix, motif, (size - 7), 0, 8, 8);
+		squareConstructor(matrix, column, (size - 8), 0, 2, 9);
+		squareConstructor(matrix, column, 7, 0, 2, 9);
+		squareConstructor(matrix, column, 7, (size - 8), 2, 9);
+		squareConstructor(matrix, line, 0, 7, 9, 2);
+		squareConstructor(matrix, line, (size - 8), 7, 9, 2);
+		squareConstructor(matrix, line, 0,(size - 8),9,2);
 	}
-		
-	public static int [][] ConstructionAlignementPattern() {
-		int [][] motif = new int [6][6];
+
+	/**
+	 * Build the alignment pattern
+	 */
+	public static int[][] alignmentPatternConstructor() {
+		int[][] motif = new int[6][6];
 		for (int i=1 ; i<=5 ; i++) {
 			for (int j=1 ; j<=5 ; j++) {
-				motif [i][j] = B;
+				motif[i][j] = B;
 			}
 		}
 		for (int i=2 ; i<=4; i++) {
 			for (int j=2 ; j<=4; j++) {
-				motif [i][j] = W;
+				motif[i][j] = W;
 			}
 		}
-		motif [3][3] = B;
+		motif[3][3] = B;
 		return motif;
 	}
 
@@ -180,11 +186,11 @@ public class MatrixConstruction {
 	 */
 	public static void addAlignmentPatterns(int[][] matrix, int version) {
 		if (version>1) {
-			int taille = matrix.length;
-			matrix=PatternPlacer(matrix, AlignementPattern, (taille - 9),(taille - 9),6,6);
+			int size = matrix.length;
+			squareConstructor(matrix, alignmentPatternConstructor(), (size - 9),(size - 9),6,6);
 		}
 	}
-	
+
 
 	/**
 	 * Add the timings patterns
@@ -219,17 +225,21 @@ public class MatrixConstruction {
 	{
 		matrix[8][matrix.length - 8] = B;
 	}
-	
+
+	/**
+	 * Convert a boolean array to an array containing black and white values
+	 *
+	 * @param tab
+	 *            the array containing boolean values
+	 */
 	public static int [] ConvertBooleanToBW(boolean [] tab) {
-		int [] Sequence = new int [tab.length] ;
+		int [] bwArray = new int [tab.length];
+
 		for (int i=0; i<tab.length ; i++) {
-			if (tab[i]) {
-				Sequence [i] =B; 
-			} else {
-				Sequence [i] =W;
-			}
+			bwArray[i] = tab[i] ? B : W;
 		}
-		return Sequence;
+
+		return bwArray;
 	}
 
 	/**
@@ -241,33 +251,34 @@ public class MatrixConstruction {
 	 *            the mask id
 	 */
 	public static void addFormatInformation(int[][] matrix, int mask) {
-		int [] Sequence = ConvertBooleanToBW(QRCodeInfos.getFormatSequence(mask));
-		int j=7;
-		for (int i=0; i<16; i++) {
-			if (i>=0 && i<=5) {
-				matrix[i][8]=Sequence[i];
+		int [] formatInfoArray = ConvertBooleanToBW(QRCodeInfos.getFormatSequence(mask));
+		int rowIndex=5;
+		int finderWidth = 8;
+		int matrixWidth = matrix.length - 1;
+
+		for (int i=0; i<formatInfoArray.length; i++) {
+			//UPPER LEFT
+			if (i <= 5) {
+				matrix[i][finderWidth]=formatInfoArray[i];
+			} else if (i==6 || i==7) {
+				matrix[i+1][finderWidth]=formatInfoArray[i];
+			} else if (i==8){
+				matrix[finderWidth][7]=formatInfoArray[i];
+			} else {
+				matrix[finderWidth][rowIndex]=formatInfoArray[i];
+				--rowIndex;
 			}
-			if (i>=6 && i<=7) {
-				matrix[i+1][8]=Sequence[i];
-			}
-			if (i>=8 && i<=15) {
-				matrix[8][j]=Sequence[i-1];
-				j=j-1;
-			}
-		}
-		int l= matrix.length - 1;
-		int m= matrix.length - 1;
-		for (int k=0; k<16; k++) {
-			if (k>=0 && k<7) {
-				matrix[8][l-k]=Sequence[k];
-			}
-			if (k>=7 && k<15) {
-				matrix[m-7][8]=Sequence[k];
-				m=m+1;
+
+			// BOTTOM
+			if(i <= 6){ // LEFT
+				matrix[finderWidth][matrixWidth-i]=formatInfoArray[i];
+			} else { // RIGHT
+				matrix[matrixWidth-7][finderWidth]=formatInfoArray[i];
+				++matrixWidth;
 			}
 		}
 	}
-		
+
 
 	/*
 	 * =======================================================================
@@ -282,7 +293,7 @@ public class MatrixConstruction {
 	 *            x-coordinate
 	 * @param row
 	 *            y-coordinate
-	 * @param color
+	 * //@param color
 	 *            : initial color without masking
 	 * @return the color with the masking
 	 */
