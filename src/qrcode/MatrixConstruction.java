@@ -290,19 +290,41 @@ public class MatrixConstruction {
 	 */
 
 	/**
-	 * Choose the color to use with the given coordinate using the masking 0
+	 * Choose the color to use with the given coordinate using the given masking
 	 * 
 	 * @param col
-	 *            x-coordinate
+	 *          x-coordinate
 	 * @param row
-	 *            y-coordinate
-	 * //@param color
-	 *            : initial color without masking
+	 *          y-coordinate
+	 * @param dataBit
+	 *          : initial color without masking
+	 * @param masking
+	 * 			The masking for which the data has to be verified
 	 * @return the color with the masking
 	 */
 	public static int maskColor(int col, int row, boolean dataBit, int masking) {
-		// TODO Implementer
-		return 0;
+		boolean[] maskList = {
+				(col+row) % 2 == 0,
+				row % 2 == 0,
+				col % 3 == 0,
+				(col + row) % 3 == 0,
+				((col/2) + (row/3)) % 2 == 0,
+				((col*row) % 2) + ((col*row) % 3) == 0,
+				(((col*row) % 2) + ((col*row) % 3)) % 2 == 0,
+				(((col+row) % 2) + ((col+row) % 3)) % 2 == 0
+		};
+
+		if(masking >= 0 && masking <= 7){
+			boolean isMasked = maskList[masking];
+
+			if((dataBit && !isMasked) || (!dataBit && isMasked)){
+				return B;
+			} else {
+				return W;
+			}
+		} else {
+			return dataBit ? B : W;
+		}
 	}
 
 	/**

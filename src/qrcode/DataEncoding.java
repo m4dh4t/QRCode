@@ -145,7 +145,7 @@ public final class DataEncoding {
         for(int i = 0; i < data.length; i++){
             int bitsLeft = 7;
             while(data[i] > 0){
-                binaryArray[bitsLeft + (i*8)] = (data[i] % 2 != 0);
+                binaryArray[bitsLeft + (i*8)] = (data[i] % 2 == 1);
                 data[i] /= 2;
 
                 --bitsLeft;
