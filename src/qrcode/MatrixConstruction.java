@@ -155,7 +155,7 @@ public class MatrixConstruction {
 	public static void elementPlacer(int[][] matrix, int[][] element, int x, int y) {
 		for (int i=0; i<element.length; i++) {
 			for (int j=0; j<element.length; j++) {
-				matrix[x+i][y+j]=element[i][j];
+				matrix[i+x][j+y]=element[i][j];
 			}
 		}
 	}
@@ -175,11 +175,11 @@ public class MatrixConstruction {
         elementPlacer(matrix, finderPattern, 0, 0);
 
         //TOP RIGHT
-        elementPlacer(matrix, separator, matrixSize-(finderPatternSize-1), 0);
+        elementPlacer(matrix, separator, matrixSize-(finderPatternSize+1), 0);
         elementPlacer(matrix, finderPattern, matrixSize - finderPatternSize, 0);
 
         //BOTTOM LEFT
-        elementPlacer(matrix, separator, 0, matrixSize-(finderPatternSize-1));
+        elementPlacer(matrix, separator, 0, matrixSize-(finderPatternSize+1));
         elementPlacer(matrix, finderPattern, 0, matrixSize - finderPatternSize);
 	}
 
@@ -337,6 +337,7 @@ public class MatrixConstruction {
 	 */
 	public static void addDataInformation(int[][] matrix, boolean[] data, int mask) {
 		// TODO Implementer
+
 
 	}
 
