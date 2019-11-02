@@ -19,6 +19,8 @@ public class MatrixConstruction {
 	 */
 	public static final int finderPatternSize = 7;
 	public static final int alignmentPatternSize = 5;
+	public static final int timingPosition = 6;
+
 	public static int matrixSize;
 
 	/**
@@ -206,7 +208,6 @@ public class MatrixConstruction {
 	 *            The 2D array to modify
 	 */
 	public static void addTimingPatterns(int[][] matrix) {
-		int timingPosition = 6;
 		for (int i = (finderPatternSize+1); i < (matrixSize - finderPatternSize-1); i++) {
 			if (i % 2 == 0) {
 				matrix[timingPosition][i] = B;
@@ -277,7 +278,7 @@ public class MatrixConstruction {
 				matrix[borderToFormatInfo][(matrixSize-1)-i]=formatInfoArray[i];
 			//TOP RIGHT
 			} else {
-				matrix[(matrixSize+6)-i][borderToFormatInfo]=formatInfoArray[i];
+				matrix[(matrixSize-borderToFormatInfo-7)+i][borderToFormatInfo]=formatInfoArray[i];
 			}
 		}
 	}
@@ -336,9 +337,79 @@ public class MatrixConstruction {
 	 *            the data to add
 	 */
 	public static void addDataInformation(int[][] matrix, boolean[] data, int mask) {
-		// TODO Implementer
+		int runCounter = 1;
 
+		int bitIndex = 0;
+		int rowIndex = matrixSize - 1;
+		int colIndex = rowIndex;
+		int columnWidth = 2;
 
+		boolean rowIndexDirection = true; //TRUE: going up - FALSE: going down
+
+		while(colIndex >= 0){ //while(bitIndex < data.length){
+			int runCounterPerRow = 0;
+
+			while (runCounterPerRow < columnWidth){
+				int bitColIndex = colIndex-runCounterPerRow;
+
+				if (!bitExists(matrix, bitColIndex, rowIndex)) {
+					if(dataLeft(data, bitIndex)){
+						matrix[bitColIndex][rowIndex] = maskColor(bitColIndex, rowIndex, data[bitIndex], mask);
+					} else {
+						matrix[bitColIndex][rowIndex] = maskColor(bitColIndex, rowIndex, false, mask);
+					}
+					++bitIndex;
+				}
+				++runCounterPerRow;
+			}
+
+			if((rowIndex == 0 || rowIndex == matrixSize-1) && endOfColumn(matrixSize, runCounter)){
+				rowIndexDirection = !rowIndexDirection;
+				if(colIndex-columnWidth == timingPosition){
+					colIndex -= columnWidth+1;
+				} else {
+					colIndex -= columnWidth;
+				}
+			}
+
+			if(!endOfColumn(matrixSize, runCounter)){
+				if(rowIndexDirection){
+					--rowIndex;
+				} else {
+					++rowIndex;
+				}
+			}
+
+			++runCounter;
+		}
+	}
+
+	public static boolean bitExists(int[][] matrix, int col, int row){
+		if(alphaValue(matrix[col][row]) == 0xFF) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static int alphaValue(int bit){
+		return ((bit >> 24)&0xFF);
+	}
+
+	public static boolean endOfColumn(int matrixSize, int runCounter){
+		if(runCounter % matrixSize == 0){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean dataLeft(boolean[] data, int bitIndex){
+		if(bitIndex == data.length){
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/*
