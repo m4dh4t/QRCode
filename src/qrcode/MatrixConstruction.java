@@ -332,7 +332,7 @@ public class MatrixConstruction {
 	 * Add the data bits into the QR code matrix
 	 * 
 	 * @param matrix
-	 *            a 2-dimensionnal array where the bits needs to be added
+	 *            a 2-dimensional array where the bits needs to be added
 	 * @param data
 	 *            the data to add
 	 */
