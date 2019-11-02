@@ -17,8 +17,6 @@ public class Main {
 		 * Encoding
 		 */
 		boolean[] encodedData = DataEncoding.byteModeEncoding(INPUT, VERSION);
-		int [][] matrice = MatrixConstruction.constructMatrix(VERSION, MASK);
-		
 
 		/*
 		 * image
