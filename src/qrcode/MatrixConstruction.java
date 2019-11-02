@@ -337,16 +337,23 @@ public class MatrixConstruction {
 	 *            the data to add
 	 */
 	public static void addDataInformation(int[][] matrix, boolean[] data, int mask) {
-		int runCounter = 1;
+		int runCounter = 1;					// The number of time the data-placing algorithm has
+											// already run. This value is incremented each time
+											// two bits of data has been placed to fill a row of
+											// the "zigzag" column
 
-		int bitIndex = 0;
-		int rowIndex = matrix.length - 1;
-		int colIndex = rowIndex;
-		int columnWidth = 2;
+		int bitIndex = 0;					// The index of the data to place. Incrementing each
+											// time a bit has been placed in the matrix
+		int rowIndex = matrix.length - 1;	// The initial row index used in the algorithm
+		int colIndex = rowIndex;			// The initial column index used in the algorithm
 
-		boolean rowIndexDirection = true; //TRUE: going up - FALSE: going down
+		final int columnWidth = 2;			// The width of a column of data where the "zigzag"
+											// algorithm of a QR Code is going to work on
 
-		while(colIndex >= 0){ //while(bitIndex < data.length){
+		boolean rowIndexDirection = true; 	// Direction representing the evolution of the row index
+											// true: going up | false: going down
+
+		while(colIndex >= 0){
 			for(int runCounterPerRow = 0; runCounterPerRow < columnWidth; ++runCounterPerRow){
 
 				int bitColIndex = colIndex-runCounterPerRow;
@@ -382,6 +389,17 @@ public class MatrixConstruction {
 		}
 	}
 
+	/**
+	 * Checks whether a bit as already been written at a given point in a matrix
+	 *
+	 * @param matrix
+	 * 		The matrix where the verification has to be done
+	 * @param col
+	 * 		The coordinate "column" to check
+	 * @param row
+	 * 		The coordinate "row" to check
+	 * @return If a bit already exist or not as a boolean
+	 */
 	public static boolean bitExists(int[][] matrix, int col, int row){
 		if(alphaValue(matrix[col][row]) == 0xFF) {
 			return true;
@@ -390,10 +408,27 @@ public class MatrixConstruction {
 		}
 	}
 
+	/**
+	 * Gives the alpha value in ARGB for a given bit
+	 *
+	 * @param bit
+	 * 		The bit for which we are looking at the alpha value
+	 * @return The alpha value in ARGB format as an integer
+	 */
 	public static int alphaValue(int bit){
 		return ((bit >> 24)&0xFF);
 	}
 
+	/**
+	 * Checks if the end of column of a given matrix has been reached
+	 *
+	 * @param matrixSize
+	 * 		The size of the matrix we want to verify
+	 * @param runCounter
+	 * 		The number of time the algorithm filling the matrix
+	 * 		has already run.
+	 * @return a boolean value representing if we are a the end of the column
+	 */
 	public static boolean endOfColumn(int matrixSize, int runCounter){
 		if(runCounter % matrixSize == 0){
 			return true;
@@ -402,6 +437,16 @@ public class MatrixConstruction {
 		}
 	}
 
+	/**
+	 * Checks if there is still data to be placed inside the matrix
+	 * representing a QR Code
+	 *
+	 * @param data
+	 * 		The boolean array of data to place in the matrix
+	 * @param bitIndex
+	 * 		The index indicating the amount of data already placed
+	 * @return a boolean value representing if there is still data to place
+	 */
 	public static boolean dataLeft(boolean[] data, int bitIndex){
 		if(data.length != 0) {
 			if (bitIndex >= data.length) {
