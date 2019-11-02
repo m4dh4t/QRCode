@@ -340,16 +340,15 @@ public class MatrixConstruction {
 		int runCounter = 1;
 
 		int bitIndex = 0;
-		int rowIndex = matrixSize - 1;
+		int rowIndex = matrix.length - 1;
 		int colIndex = rowIndex;
 		int columnWidth = 2;
 
 		boolean rowIndexDirection = true; //TRUE: going up - FALSE: going down
 
 		while(colIndex >= 0){ //while(bitIndex < data.length){
-			int runCounterPerRow = 0;
+			for(int runCounterPerRow = 0; runCounterPerRow < columnWidth; ++runCounterPerRow){
 
-			while (runCounterPerRow < columnWidth){
 				int bitColIndex = colIndex-runCounterPerRow;
 
 				if (!bitExists(matrix, bitColIndex, rowIndex)) {
@@ -360,10 +359,9 @@ public class MatrixConstruction {
 					}
 					++bitIndex;
 				}
-				++runCounterPerRow;
 			}
 
-			if((rowIndex == 0 || rowIndex == matrixSize-1) && endOfColumn(matrixSize, runCounter)){
+			if((rowIndex == 0 || rowIndex == matrix.length-1) && endOfColumn(matrix.length, runCounter)){
 				rowIndexDirection = !rowIndexDirection;
 				if(colIndex-columnWidth == timingPosition){
 					colIndex -= columnWidth+1;
@@ -372,7 +370,7 @@ public class MatrixConstruction {
 				}
 			}
 
-			if(!endOfColumn(matrixSize, runCounter)){
+			if(!endOfColumn(matrix.length, runCounter)){
 				if(rowIndexDirection){
 					--rowIndex;
 				} else {
@@ -405,10 +403,14 @@ public class MatrixConstruction {
 	}
 
 	public static boolean dataLeft(boolean[] data, int bitIndex){
-		if(bitIndex == data.length){
-			return false;
+		if(data.length != 0) {
+			if (bitIndex >= data.length) {
+				return false;
+			} else {
+				return true;
+			}
 		} else {
-			return true;
+			return false;
 		}
 	}
 
