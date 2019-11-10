@@ -21,8 +21,6 @@ public class MatrixConstruction {
 	public static final int alignmentPatternSize = 5;
 	public static final int timingPosition = 6;
 
-	public static int matrixSize;
-
 	/**
 	 * Create the matrix of a QR code with the given data.
 	 * 
@@ -90,8 +88,8 @@ public class MatrixConstruction {
 	 * @return an empty matrix
 	 */
 	public static int[][] initializeMatrix(int version) {
-		matrixSize = QRCodeInfos.getMatrixSize(version);
-		return new int[matrixSize][matrixSize];
+		int size = QRCodeInfos.getMatrixSize(version);
+		return new int[size][size];
 	}
 
 	/**
@@ -171,6 +169,7 @@ public class MatrixConstruction {
 	public static void addFinderPatterns(int[][] matrix) {
 		int[][] finderPattern = patternBuilder(finderPatternSize);
 		int[][] separator = separatorBuilder();
+		int matrixSize = matrix.length;
 
         //TOP LEFT
         elementPlacer(matrix, separator, 0, 0);
@@ -178,11 +177,11 @@ public class MatrixConstruction {
 
         //TOP RIGHT
         elementPlacer(matrix, separator, matrixSize-(finderPatternSize+1), 0);
-        elementPlacer(matrix, finderPattern, matrixSize - finderPatternSize, 0);
+        elementPlacer(matrix, finderPattern, matrixSize-finderPatternSize, 0);
 
         //BOTTOM LEFT
         elementPlacer(matrix, separator, 0, matrixSize-(finderPatternSize+1));
-        elementPlacer(matrix, finderPattern, 0, matrixSize - finderPatternSize);
+        elementPlacer(matrix, finderPattern, 0, matrixSize-finderPatternSize);
 	}
 
 	/**
@@ -195,9 +194,11 @@ public class MatrixConstruction {
 	 *            included
 	 */
 	public static void addAlignmentPatterns(int[][] matrix, int version) {
+		int matrixSize = matrix.length;
+
 		if (version>1) {
 			int[][] alignmentPattern = patternBuilder(alignmentPatternSize);
-			elementPlacer(matrix, alignmentPattern, matrixSize - 9,matrixSize - 9);
+			elementPlacer(matrix, alignmentPattern, matrixSize-9,matrixSize-9);
 		}
 	}
 
@@ -208,7 +209,9 @@ public class MatrixConstruction {
 	 *            The 2D array to modify
 	 */
 	public static void addTimingPatterns(int[][] matrix) {
-		for (int i = (finderPatternSize+1); i < (matrixSize - finderPatternSize-1); i++) {
+		int matrixSize = matrix.length;
+
+		for (int i = (finderPatternSize+1); i < (matrixSize-finderPatternSize-1); i++) {
 			if (i % 2 == 0) {
 				matrix[timingPosition][i] = B;
                 matrix[i][timingPosition] = B;
@@ -225,9 +228,10 @@ public class MatrixConstruction {
 	 * @param matrix
 	 *            The 2-dimensional array representing the QR code
 	 */
-	public static void addDarkModule(int[][] matrix)
-	{
-		matrix[8][matrixSize - 8] = B;
+	public static void addDarkModule(int[][] matrix){
+	int matrixSize = matrix.length;
+
+		matrix[8][matrixSize-8] = B;
 	}
 
 	/**
@@ -259,6 +263,7 @@ public class MatrixConstruction {
 		int [] formatInfoArray = ConvertBooleanToBW(QRCodeInfos.getFormatSequence(mask));
 		int rowIndex = 5;
 		int borderToFormatInfo = finderPatternSize + 1;
+		int matrixSize = matrix.length;
 
 		for (int i=0; i<formatInfoArray.length; i++) {
 			//TOP LEFT
